@@ -7,13 +7,13 @@ import javax.imageio.ImageIO;
 import lombok.Getter;
 import lombok.Setter;
 import the.storeroom.Game;
-import the.storeroom.tiledlayer.TiledLayer;
+import the.storeroom.layers.ObstaclesLayer;
 
 /**
  *
  * @author Remi
  */
-public class Entity {
+public abstract class Entity {
 
     @Getter @Setter private int x, y;
     private BufferedImage sprite;
@@ -22,6 +22,7 @@ public class Entity {
     @Getter @Setter private int hp, mp;
     @Getter @Setter private int speed; //TODO
     @Getter @Setter private int attack, defense;
+    @Getter @Setter private int precision;
 
     public Entity(String pathToSprite) {
         try {
@@ -39,21 +40,21 @@ public class Entity {
         g.drawImage(sprite, x, y, null);
     }
 
-    public boolean canMove(Direction dir, TiledLayer layer) {
-        int layerX = -layer.getBlocksX();
-        int layerY = -layer.getBlocksY();
+    public boolean canMove(Direction dir, ObstaclesLayer layer) {
+        int layerX = -layer.getX();
+        int layerY = -layer.getY();
         int realX = x / Game.TILE.width - layerX;
         int realY = y / Game.TILE.height - layerY;
 
         switch (dir) {
             case DOWN:
-                return layer.getTile(realX, realY + 1) == 0;
+                return layer.isPassable(realX, realY + 1);
             case UP:
-                return layer.getTile(realX, realY - 1) == 0;
+                return layer.isPassable(realX, realY - 1);
             case LEFT:
-                return layer.getTile(realX - 1, realY) == 0;
+                return layer.isPassable(realX - 1, realY);
             case RIGHT:
-                return layer.getTile(realX + 1, realY) == 0;
+                return layer.isPassable(realX + 1, realY);
         }
 
         return true;

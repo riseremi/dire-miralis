@@ -1,4 +1,4 @@
-package the.storeroom.tiledlayer;
+package the.storeroom.layers;
 
 /**
  *
@@ -6,7 +6,7 @@ package the.storeroom.tiledlayer;
  */
 public final class Bresenham {
 
-    public static void line(int x, int y, int x2, int y2, int tile, int[][] fovMap, int[][] obstacles) {
+    public static void line(int x, int y, int x2, int y2, int tile, int[][] fovMap, ObstaclesLayer obstacles) {
         int w = x2 - x;
         int h = y2 - y;
         int dx1 = 0, dy1 = 0, dx2 = 0, dy2 = 0;
@@ -40,12 +40,16 @@ public final class Bresenham {
         int numerator = longest >> 1;
         for (int i = 0; i <= longest; i++) {
 //            putpixel(x, y, color);
-            fovMap[x][y] = tile;
-            
-            if(obstacles[x][y]!=0) {
+//            System.out.println("x:" + x + " y:" + y);
+
+            try {
+                fovMap[x][y] = FOVLayer.VISIBLE;
+            } catch (Exception e) {
+            }
+            if (!obstacles.isPassable(x, y)) {
                 return;
             }
-            
+
             numerator += shortest;
             if (!(numerator < longest)) {
                 numerator -= longest;

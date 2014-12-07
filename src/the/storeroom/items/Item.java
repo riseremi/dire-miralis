@@ -27,8 +27,8 @@ public class Item extends AbstractItem {
 
     @Override
     public void paint(Graphics g) {
-        final int xx = (x - Game.getInstance().getMap().getTiles().getBlocksX()) * Game.TILE.width;
-        final int yy = (y - Game.getInstance().getMap().getTiles().getBlocksY()) * Game.TILE.height;
+        final int xx = (x - Game.getInstance().getMap().getTiles().getX()) * Game.TILE.width;
+        final int yy = (y - Game.getInstance().getMap().getTiles().getY()) * Game.TILE.height;
         g.drawImage(image, xx, yy, null);
     }
 
